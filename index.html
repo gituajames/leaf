@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin=""/>
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/base.css">
+        <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+        integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+        crossorigin=""></script>
+        <script src="js/leaflet.js"></script>
+        <script src="data/boundary.geojson"></script>
+        <script src="data/kenya.geojson"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>leafletjs</title>
+</head>
+<body>
+    <div id="mapid" ></div>
+    <script>
+    
+    // var mapOptions = {
+    // center = [17.385044, 78.486671],
+    // zoom = 10
+    // }  
+    var kenyaStyle = {
+        "color": "#ff7800",
+        "weght": 5,
+        "opacity": 0.65
+    }
+    
+    var layer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+        hot = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png');
+
+    var mymap = L.map('mapid',{
+        center: [0, 37],
+        zoom: 6,
+        layers: [layer, hot]
+    });
+    
+    // L.geoJSON(shape2).addTo(mymap);
+    boundary = L.geoJSON(boundary);
+    kenya = L.geoJSON(kenya, {style: kenyaStyle});
+
+    // lodind an image to the map
+    var imageurl = 'data/images/ndvi1.png',
+    imagebounds = [[0.8731, 35.0291],[-0.914033, 36.658830]]
+    ndvi = L.imageOverlay(imageurl, imagebounds)
+
+    var baselayers = {
+        "osm": layer,
+        "hot": hot
+    }
+
+    var overlay = {
+        "kenya": kenya,
+        "bound": boundary,
+        "ndvi": ndvi 
+    };
+
+    L.control.layers(baselayers, overlay).addTo(mymap);
+
+    </script>
+    
+</body>
+</html>
